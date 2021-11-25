@@ -1,17 +1,26 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BookShopMVVM.Models;
+using BookShopMVVM.ViewModels;
+using BookShopMVVM.Views;
 using System.Windows;
 
 namespace BookShopMVVM
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
+        protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+
+            NavigationStore navigationStore = new();
+            HomeViewModel homeViewModel = new HomeViewModel(navigationStore);
+            navigationStore.CurrentViewModel = homeViewModel;
+
+            MainWindow mainWindow = new()
+            {
+                DataContext = new MainViewModel(navigationStore)
+            };
+
+            mainWindow.Show();
+        }
     }
 }

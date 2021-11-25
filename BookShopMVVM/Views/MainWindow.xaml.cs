@@ -1,6 +1,6 @@
 ﻿using System.Windows;
 
-namespace BookShopMVVM
+namespace BookShopMVVM.Views
 {
     public partial class MainWindow : Window
     {
