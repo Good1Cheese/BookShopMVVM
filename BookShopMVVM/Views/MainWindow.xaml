@@ -12,15 +12,43 @@
     MinHeight="300"
     mc:Ignorable="d">
 
-    <ContentControl Content="{Binding NavigationStore.CurrentViewModel}">
-        <ContentControl.Resources>
-            <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
-                <views:HomeView />
-            </DataTemplate>
-            <DataTemplate DataType="{x:Type viewModels:ShopViewModel}">
-                <views:ShopView />
-            </DataTemplate>
-        </ContentControl.Resources>
-    </ContentControl>
+    <Window.Background>
+        <SolidColorBrush Color="Black" />
+    </Window.Background>
 
+    <Window.Resources>
+        <Style x:Key="MainLinkStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+    </Window.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+
+        <Grid VerticalAlignment="Top" Background="White">
+            <Grid Margin="12" VerticalAlignment="Top">
+                <Grid MaxWidth="200">
+                    <TextBlock HorizontalAlignment="Left" Style="{StaticResource MainLinkStyle}" Text="Home" />
+                    <TextBlock HorizontalAlignment="Center" Style="{StaticResource MainLinkStyle}" Text="Webshop" />
+                    <TextBlock HorizontalAlignment="Right" Style="{StaticResource MainLinkStyle}" Text="Contact" />
+                </Grid>
+                <Image MaxWidth="25" MaxHeight="25" HorizontalAlignment="Right" Source="/Images/shopping-cart.png" />
+            </Grid>
+        </Grid>
+
+        <ContentControl Grid.Row="1" Content="{Binding NavigationStore.CurrentViewModel}">
+            <ContentControl.Resources>
+                <DataTemplate DataType="{x:Type viewModels:HomeViewModel}">
+                    <views:HomeView />
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type viewModels:ShopViewModel}">
+                    <views:ShopView />
+                </DataTemplate>
+            </ContentControl.Resources>
+        </ContentControl>
+    </Grid>
 </Window>

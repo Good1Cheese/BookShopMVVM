@@ -11,16 +11,16 @@ namespace BookShopMVVM
         {
             base.OnStartup(e);
 
-            NavigationStore navigationStore = new();
-            HomeViewModel homeViewModel = new HomeViewModel(navigationStore);
-            navigationStore.CurrentViewModel = homeViewModel;
+            //NavigationStore navigationStore = new();
+            //HomeViewModel homeViewModel = new(navigationStore);
+            //navigationStore.CurrentViewModel = homeViewModel;
 
-            MainWindow mainWindow = new()
-            {
-                DataContext = new MainViewModel(navigationStore)
-            };
+            //MainWindow mainWindow = new()
+            //{
+            //    DataContext = new MainViewModel(navigationStore)
+            //};
 
-            mainWindow.Show();
+            //mainWindow.Show();
         }
     }
 }

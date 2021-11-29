@@ -4,29 +4,12 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:viewModels="clr-namespace:BookShopMVVM.ViewModels"
     mc:Ignorable="d">
-
-    <UserControl.Resources>
-        <Style x:Key="Icon" TargetType="Image">
-            <Setter Property="MaxHeight" Value="25" />
-            <Setter Property="MaxWidth" Value="25" />
-        </Style>
-    </UserControl.Resources>
-
     <UserControl.Background>
         <ImageBrush ImageSource="/Images/hero-bcg.jpeg" Stretch="UniformToFill" />
     </UserControl.Background>
 
     <Grid>
-        <Grid VerticalAlignment="Top" Background="#e7e2dd">
-            <Grid MaxWidth="750" Margin="12" VerticalAlignment="Top">
-                <Image HorizontalAlignment="Left" Source="/Images/premium-icon-menu-2976215.png" Style="{StaticResource Icon}" />
-                <TextBlock HorizontalAlignment="Center" FontSize="20" Text="Book Shop" TextAlignment="Center" />
-                <Image HorizontalAlignment="Right" Source="/Images/shopping-cart-icon.png" Style="{StaticResource Icon}" />
-            </Grid>
-        </Grid>
-
         <Grid MinHeight="90" HorizontalAlignment="Center" VerticalAlignment="Center">
             <Grid Margin="-20" Background="White" Opacity="0.8" />
             <Grid>
