@@ -7,19 +7,35 @@
     mc:Ignorable="d">
 
     <UserControl.Resources>
+        <Style x:Key="DefaultButton" TargetType="Button">
+            <Style.Triggers>
+                <Trigger Property="IsMouseOver" Value="True">
+                    <Setter Property="Cursor" Value="Hand" />
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="Icon" TargetType="Image">
+            <Setter Property="MaxHeight" Value="25" />
+            <Setter Property="MaxWidth" Value="25" />
+        </Style>
+
         <Style x:Key="ProductText" TargetType="TextBlock">
             <Setter Property="Foreground" Value="White" />
             <Setter Property="Padding" Value="0,0,0,5" />
         </Style>
-        <Style x:Key="ListBoxItem" TargetType="ListBoxItem">
+
+        <Style x:Key="UnselectableButton" BasedOn="{StaticResource DefaultButton}" TargetType="Button">
+            <Setter Property="Background" Value="Transparent" />
+            <Setter Property="BorderThickness" Value="0" />
             <Setter Property="Template">
                 <Setter.Value>
-                    <ControlTemplate TargetType="ListBoxItem">
+                    <ControlTemplate TargetType="Button">
                         <Border Name="Border">
                             <ContentPresenter />
                         </Border>
                         <ControlTemplate.Triggers>
-                            <Trigger Property="IsSelected" Value="true">
+                            <Trigger Property="IsMouseOver" Value="true">
                                 <Setter TargetName="Border" Property="Background" Value="Transparent" />
                             </Trigger>
                         </ControlTemplate.Triggers>
@@ -27,109 +43,223 @@
                 </Setter.Value>
             </Setter>
         </Style>
+
+
+        <Style x:Key="MainLink" BasedOn="{StaticResource UnselectableButton}" TargetType="Button">
+            <Setter Property="FontSize" Value="14" />
+            <Setter Property="FontWeight" Value="Bold" />
+        </Style>
+
+        <Style x:Key="UnselectableListBoxItem" TargetType="ListBoxItem">
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ListBoxItem">
+                        <Border Name="Border">
+                            <ContentPresenter />
+                        </Border>
+                        <ControlTemplate.Triggers>
+                            <Trigger Property="IsMouseOver" Value="true">
+                                <Setter TargetName="Border" Property="Background" Value="Transparent" />
+                            </Trigger>
+                        </ControlTemplate.Triggers>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
     </UserControl.Resources>
 
     <Grid>
-        <ListBox
-            Grid.Row="1"
-            Margin="30,10,10,5"
-            Background="Black"
-            BorderThickness="0"
-            ItemContainerStyle="{StaticResource ListBoxItem}"
-            ItemsSource="{Binding Products}"
-            ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-            ScrollViewer.VerticalScrollBarVisibility="Auto">
-            <ListBox.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel ItemHeight="270" ItemWidth="240" Orientation="Horizontal" />
-                </ItemsPanelTemplate>
-            </ListBox.ItemsPanel>
-            <ListBox.ItemTemplate>
-                <DataTemplate>
-                    <Border Margin="10" Background="#797979" CornerRadius="5">
-                        <Border.Triggers>
-                            <EventTrigger RoutedEvent="MouseEnter">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <PointAnimation Storyboard.TargetName="HighestPoint" Storyboard.TargetProperty="Point" To="220 0" Duration="0:0:0.25" />
-                                        <DoubleAnimation Storyboard.TargetName="ProductScale" Storyboard.TargetProperty="ScaleX" To="1.025" Duration="0:0:0.3" />
-                                        <DoubleAnimation Storyboard.TargetName="ProductScale" Storyboard.TargetProperty="ScaleY" To="1.025" Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                            <EventTrigger RoutedEvent="MouseLeave">
-                                <BeginStoryboard>
-                                    <Storyboard>
-                                        <PointAnimation Storyboard.TargetName="HighestPoint" Storyboard.TargetProperty="Point" To="220 -30" Duration="0:0:0.25" />
-                                        <DoubleAnimation Storyboard.TargetName="ProductScale" Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.3" />
-                                        <DoubleAnimation Storyboard.TargetName="ProductScale" Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.3" />
-                                    </Storyboard>
-                                </BeginStoryboard>
-                            </EventTrigger>
-                        </Border.Triggers>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="50" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
-                        <Border.RenderTransform>
-                            <ScaleTransform x:Name="ProductScale" />
-                        </Border.RenderTransform>
-                        <StackPanel>
-                            <StackPanel>
-                                <Image Source="/Images/100.jpg" />
-                                <Path HorizontalAlignment="Right" Fill="#797979">
-                                    <Path.Data>
-                                        <PathGeometry>
-                                            <PathFigure StartPoint="0 0">
-                                                <LineSegment x:Name="HighestPoint" Point="220 -30" />
-                                                <LineSegment Point="220 0" />
-                                            </PathFigure>
-                                        </PathGeometry>
-                                    </Path.Data>
-                                </Path>
-                            </StackPanel>
-                            <Border Padding="7.5,5,7.5,0">
+        <Grid VerticalAlignment="Top" Background="White">
+            <Grid Margin="12" VerticalAlignment="Top">
+                <Grid MaxWidth="200">
+                    <Button HorizontalAlignment="Left" Command="{Binding NavigationCommand}" Content="Home" Style="{StaticResource MainLink}" />
+                    <Button HorizontalAlignment="Center" Content="Webshop" Style="{StaticResource MainLink}" />
+                    <Button HorizontalAlignment="Right" Content="Contact" Style="{StaticResource MainLink}" />
+                </Grid>
+                <StackPanel HorizontalAlignment="Right" Orientation="Horizontal">
+                    <TextBlock Margin="0,0,5,0" FontSize="20" Text="{Binding CartProducts.Count}" />
+                    <Button Style="{StaticResource UnselectableButton}">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Opacity" TargetName="CartProductsList">
+                                        <DoubleAnimation To="1" Duration="0:0:0.5" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                        <Image Source="/Images/cartIcon.png" Style="{StaticResource Icon}" />
+                    </Button>
+                </StackPanel>
+            </Grid>
+        </Grid>
+
+        <Grid Grid.Row="1" Margin="30,10,10,5">
+            <Grid
+                x:Name="CartProductsList"
+                Margin="0,0,25,0"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Top"
+                Panel.ZIndex="1"
+                Background="White"
+                Opacity="0">
+                <StackPanel>
+                    <Button Style="{StaticResource UnselectableButton}">
+                        <Button.Triggers>
+                            <EventTrigger RoutedEvent="Button.Click">
+                                <BeginStoryboard>
+                                    <Storyboard TargetProperty="Opacity" TargetName="CartProductsList">
+                                        <DoubleAnimation To="0" Duration="0:0:0.25" />
+                                    </Storyboard>
+                                </BeginStoryboard>
+                            </EventTrigger>
+                        </Button.Triggers>
+                        <Image MaxWidth="25" MaxHeight="25" HorizontalAlignment="Right" Source="/Images/closeIcon.png" />
+                    </Button>
+                    <ListBox
+                        Height="250"
+                        MinWidth="200"
+                        ItemContainerStyle="{StaticResource UnselectableListBoxItem}"
+                        ItemsSource="{Binding CartProducts}"
+                        ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                        ScrollViewer.VerticalScrollBarVisibility="Auto">
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Margin="15,10,15,10" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Border Margin="0,10,0,0" Padding="5" BorderBrush="Black" BorderThickness="0,1,0,1">
+                                    <Grid>
+                                        <TextBlock
+                                            MaxWidth="100"
+                                            HorizontalAlignment="Left"
+                                            FontSize="15"
+                                            FontWeight="Light"
+                                            Text="{Binding Title}"
+                                            TextWrapping="Wrap" />
+                                        <Button HorizontalAlignment="Right" Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.RemoveProduct}" CommandParameter="{Binding}" Style="{StaticResource UnselectableButton}">
+                                            <Image
+                                                Width="200"
+                                                Height="200"
+                                                MaxWidth="15"
+                                                MaxHeight="15"
+                                                Source="/Images/closeIcon.png" />
+                                        </Button>
+                                    </Grid>
+                                </Border>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBlock Padding="5" FontSize="17" FontWeight="Medium" Text="Total amount: 231$" />
+                </StackPanel>
+            </Grid>
+
+            <ListBox
+                Background="Transparent"
+                BorderThickness="0"
+                ItemContainerStyle="{StaticResource UnselectableListBoxItem}"
+                ItemsSource="{Binding Products}"
+                ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                ScrollViewer.VerticalScrollBarVisibility="Auto">
+                <ListBox.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel ItemHeight="270" ItemWidth="240" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ListBox.ItemsPanel>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Margin="10" CornerRadius="5">
+                            <Border.Triggers>
+                                <EventTrigger RoutedEvent="MouseEnter">
+                                    <BeginStoryboard>
+                                        <Storyboard TargetName="ProductScale">
+                                            <PointAnimation Storyboard.TargetName="HighestPoint" Storyboard.TargetProperty="Point" To="220 0" Duration="0:0:0.25" />
+                                            <DoubleAnimation Storyboard.TargetProperty="ScaleX" To="1.025" Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetProperty="ScaleY" To="1.025" Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                                <EventTrigger RoutedEvent="MouseLeave">
+                                    <BeginStoryboard>
+                                        <Storyboard TargetName="ProductScale">
+                                            <PointAnimation Storyboard.TargetName="HighestPoint" Storyboard.TargetProperty="Point" To="220 -30" Duration="0:0:0.25" />
+                                            <DoubleAnimation Storyboard.TargetProperty="ScaleX" To="1" Duration="0:0:0.3" />
+                                            <DoubleAnimation Storyboard.TargetProperty="ScaleY" To="1" Duration="0:0:0.3" />
+                                        </Storyboard>
+                                    </BeginStoryboard>
+                                </EventTrigger>
+                            </Border.Triggers>
+
+                            <Border.RenderTransform>
+                                <ScaleTransform x:Name="ProductScale" />
+                            </Border.RenderTransform>
+
+                            <StackPanel Background="#797979">
                                 <StackPanel>
-                                    <StackPanel>
-                                        <TextBlock FontSize="15" Style="{StaticResource ProductText}" Text="{Binding Title}" />
-                                        <TextBlock FontSize="12" Style="{StaticResource ProductText}" Text="{Binding Description}" TextWrapping="Wrap" />
-                                    </StackPanel>
+                                    <Image Source="/Images/productIcon.jpg" />
+                                    <Path HorizontalAlignment="Right" Fill="#797979">
+                                        <Path.Data>
+                                            <PathGeometry>
+                                                <PathFigure StartPoint="0 0">
+                                                    <LineSegment x:Name="HighestPoint" Point="220 -30" />
+                                                    <LineSegment Point="220 0" />
+                                                </PathFigure>
+                                            </PathGeometry>
+                                        </Path.Data>
+                                    </Path>
+                                </StackPanel>
+                                <Border Padding="7.5,5,7.5,0">
                                     <StackPanel>
                                         <StackPanel>
-                                            <TextBlock HorizontalAlignment="Right" FontSize="18" Style="{StaticResource ProductText}" Text="{Binding Price, StringFormat=0.$}" />
+                                            <TextBlock FontSize="15" Style="{StaticResource ProductText}" Text="{Binding Title}" />
+                                            <TextBlock FontSize="12" Style="{StaticResource ProductText}" Text="{Binding Description}" TextWrapping="Wrap" />
                                         </StackPanel>
-                                        <Grid VerticalAlignment="Center">
-                                            <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
-                                                <Image MaxHeight="15" Margin="0,0,5,0" HorizontalAlignment="Left" Source="/Images/icons8-help-50.png" />
-                                                <TextBlock HorizontalAlignment="Left" Foreground="White" Text="Quickview" />
+                                        <StackPanel>
+                                            <StackPanel>
+                                                <TextBlock HorizontalAlignment="Right" FontSize="18" Style="{StaticResource ProductText}" Text="{Binding Price, StringFormat=0.$}" />
                                             </StackPanel>
-                                            <Button
-                                                MinWidth="80"
-                                                Margin="0,5,0,0"
-                                                Padding="5.5"
-                                                HorizontalAlignment="Right"
-                                                Background="#797979"
-                                                BorderBrush="#00fefe"
-                                                BorderThickness="1"
-                                                Content="Add to cart"
-                                                FontSize="15"
-                                                Foreground="#00fefe">
-                                                <Button.Resources>
-                                                    <Style TargetType="Border">
-                                                        <Setter Property="CornerRadius" Value="15" />
-                                                        <Style.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Cursor" Value="Hand" />
-                                                            </Trigger>
-                                                        </Style.Triggers>
-                                                    </Style>
-                                                </Button.Resources>
-                                            </Button>
-                                        </Grid>
+                                            <Grid VerticalAlignment="Center">
+                                                <StackPanel VerticalAlignment="Center" Orientation="Horizontal">
+                                                    <Image MaxHeight="15" Margin="0,0,5,0" HorizontalAlignment="Left" Source="/Images/helpIcon.png" />
+                                                    <TextBlock HorizontalAlignment="Left" Foreground="White" Text="Quickview" />
+                                                </StackPanel>
+                                                <Button
+                                                    MinWidth="80"
+                                                    Margin="0,5,0,0"
+                                                    Padding="5.5"
+                                                    HorizontalAlignment="Right"
+                                                    Background="Transparent"
+                                                    BorderBrush="#00fefe"
+                                                    BorderThickness="1"
+                                                    Command="{Binding RelativeSource={RelativeSource AncestorType=ListBox}, Path=DataContext.AddProductToCart}"
+                                                    CommandParameter="{Binding}"
+                                                    Content="Add to cart"
+                                                    FontSize="15"
+                                                    Foreground="#00fefe"
+                                                    Style="{StaticResource DefaultButton}">
+                                                    <Button.Resources>
+                                                        <Style TargetType="Border">
+                                                            <Setter Property="CornerRadius" Value="15" />
+                                                        </Style>
+                                                    </Button.Resources>
+                                                </Button>
+                                            </Grid>
+                                        </StackPanel>
                                     </StackPanel>
-                                </StackPanel>
-                            </Border>
-                        </StackPanel>
-                    </Border>
-                </DataTemplate>
-            </ListBox.ItemTemplate>
-        </ListBox>
+                                </Border>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
     </Grid>
 </UserControl>

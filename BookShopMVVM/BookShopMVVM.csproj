@@ -9,17 +9,19 @@
   <ItemGroup>
     <None Remove="100.jpg" />
     <None Remove="Images\.png" />
-    <None Remove="Images\hero-bcg.jpeg" />
-    <None Remove="Images\icons8-help-50.png" />
+    <None Remove="Images\background.jpeg" />
+    <None Remove="Images\cartIcon.png" />
+    <None Remove="Images\closeIcon.png" />
+    <None Remove="Images\helpIcon.png" />
     <None Remove="Images\shopping-cart-icon.png" />
-    <None Remove="Images\shopping-cart.png" />
   </ItemGroup>
 
   <ItemGroup>
-    <Resource Include="Images\100.jpg" />
-    <Resource Include="Images\hero-bcg.jpeg" />
-    <Resource Include="Images\icons8-help-50.png" />
-    <Resource Include="Images\shopping-cart.png" />
+    <Resource Include="Images\closeIcon.png" />
+    <Resource Include="Images\productIcon.jpg" />
+    <Resource Include="Images\background.jpeg" />
+    <Resource Include="Images\helpIcon.png" />
+    <Resource Include="Images\cartIcon.png" />
   </ItemGroup>
 
 </Project>

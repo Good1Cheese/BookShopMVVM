@@ -6,7 +6,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d">
     <UserControl.Background>
-        <ImageBrush ImageSource="/Images/hero-bcg.jpeg" Stretch="UniformToFill" />
+        <ImageBrush ImageSource="/Images/background.jpeg" Stretch="UniformToFill" />
     </UserControl.Background>
 
     <Grid>
